@@ -1,10 +1,5 @@
 import torch
-import matplotlib.pyplot as plt
 import torchvision
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.utils.data import DataLoader
 from model import *
 
 def data_prep(noise_lambda=64, batch_size_train=512, batch_size_test=512):
