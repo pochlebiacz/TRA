@@ -5,31 +5,24 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
-
 from models import *
 
 def data_prep(noise_lambda=64, batch_size_train=512, batch_size_test=512):
-
     trainset = torchvision.datasets.MNIST('./data/', train=True, download=True,
                               transform=torchvision.transforms.Compose([
                               torchvision.transforms.ToTensor()]))
     testset = torchvision.datasets.MNIST('./data/', train=False, download=True,
                               transform=torchvision.transforms.Compose([
                               torchvision.transforms.ToTensor()]))
-    
-    #Adding gaussian noise to the training set
-    # trainset_noise = trainset.data + torch.randn(trainset.data.size())*noise_lambda
-    # testset_noise = testset.data + torch.randn(testset.data.size())*noise_lambda
 
-    # trainset_norm = trainset.data/torch.max(trainset.data) 
-    # testset_norm = testset.data/torch.max(testset.data)
-
+    # -------------- Adding gaussian noise to the training set ---------------
     trainset_norm = trainset.data 
     testset_norm = testset.data
 
-    trainset_noise = trainset_norm+torch.randn(trainset_norm.size())*noise_lambda
-    testset_noise = testset_norm+torch.randn(testset_norm.size())*noise_lambda
+    trainset_noise = trainset_norm + torch.randn(trainset_norm.size()) * noise_lambda
+    testset_noise = testset_norm + torch.randn(testset_norm.size()) * noise_lambda
 
+    # -------------- Squeezing augmented data to [0, 255] ---------------
     trainset_noise = torch.clamp(trainset_noise, 0, 255)
     testset_noise = torch.clamp(testset_noise, 0, 255)
 

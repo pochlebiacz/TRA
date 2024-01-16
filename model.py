@@ -18,5 +18,5 @@ class CONV(nn.Module):
         x = x.view(-1, 7680)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
-        x = torch.sigmoid(x)*255
+        x = torch.sigmoid(x)*255 # sigmoid to make sure the output is in [0, 255]
         return x
